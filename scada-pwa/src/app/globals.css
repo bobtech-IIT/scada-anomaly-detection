@@ -65,3 +65,26 @@
 .glow-border-red {
   box-shadow: 0 0 15px rgba(244, 63, 94, 0.15);
 }
+
+/* Greenish Glassmorphism accents for AI refiner */
+.glass-panel-green {
+  background: rgba(6, 40, 30, 0.4);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(16, 185, 129, 0.15);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+}
+
+.glass-panel-green-hover:hover {
+  border-color: rgba(16, 185, 129, 0.35);
+  box-shadow: 0 10px 30px rgba(16, 185, 129, 0.1);
+}
+
+.glow-green {
+  text-shadow: 0 0 10px rgba(16, 185, 129, 0.6);
+}
+
+.glow-border-green {
+  box-shadow: 0 0 15px rgba(16, 185, 129, 0.15);
+}
+
