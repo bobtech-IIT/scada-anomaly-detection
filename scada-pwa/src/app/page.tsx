@@ -122,6 +122,31 @@ export default function SCADAPWADashboard() {
 
   // Initialize simulated database
   useEffect(() => {
+    // Cache busting to clear old PWA storage caches
+    if (typeof window !== 'undefined') {
+      const currentVersion = "v3";
+      const savedVersion = localStorage.getItem("aegis_app_version");
+      if (savedVersion !== currentVersion) {
+        localStorage.setItem("aegis_app_version", currentVersion);
+        if ('serviceWorker' in navigator) {
+          navigator.serviceWorker.getRegistrations().then((regs) => {
+            for (const reg of regs) {
+              reg.unregister();
+            }
+          });
+        }
+        if ('caches' in window) {
+          caches.keys().then((keys) => {
+            for (const key of keys) {
+              caches.delete(key);
+            }
+          });
+        }
+        window.location.reload();
+        return;
+      }
+    }
+
     setMounted(true);
     
     // Register Service Worker for PWA offline caching
