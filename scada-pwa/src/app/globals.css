@@ -1,0 +1,67 @@
+@import "tailwindcss";
+
+:root {
+  --background: #070b13;
+  --foreground: #f8fafc;
+  
+  --font-sans: var(--font-outfit), system-ui, -apple-system, sans-serif;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-sans);
+}
+
+/* Custom scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(15, 23, 42, 0.3);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.2);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(59, 130, 246, 0.4);
+}
+
+/* Custom premium styles */
+.glass-panel {
+  background: rgba(15, 23, 42, 0.55);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+}
+
+.glass-panel-hover:hover {
+  border-color: rgba(59, 130, 246, 0.25);
+  box-shadow: 0 10px 30px rgba(59, 130, 246, 0.05);
+}
+
+.glow-blue {
+  text-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+}
+
+.glow-teal {
+  text-shadow: 0 0 10px rgba(20, 184, 166, 0.5);
+}
+
+.glow-red {
+  text-shadow: 0 0 10px rgba(244, 63, 94, 0.5);
+}
+
+.glow-border-blue {
+  box-shadow: 0 0 15px rgba(59, 130, 246, 0.15);
+}
+
+.glow-border-red {
+  box-shadow: 0 0 15px rgba(244, 63, 94, 0.15);
+}
