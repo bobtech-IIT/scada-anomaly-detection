@@ -2,143 +2,126 @@
 
 # 🛡️ AEGIS SCADA (Autonomous Equipment Guard & Intelligent Scheduler)
 
-### Next-Gen Industrial Anomaly Detection, Autoregressive Forecasting, Tabular Reinforcement Learning, and Conversational Document RAG — 100% Client-Side.
-
-[![Vercel Deployment](https://img.shields.io/badge/Vercel-Deployed-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://scada-pwa.vercel.app)
-[![Next.js 16](https://img.shields.io/badge/Next.js-16_Turbopack-000000?style=for-the-badge&logo=nextdotjs&logoColor=white)](https://nextjs.org/)
-[![Tailwind v4](https://img.shields.io/badge/Tailwind_CSS-v4.0-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.x-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
-[![PWA Certified](https://img.shields.io/badge/PWA-Compliance_Offline-5A0FC8?style=for-the-badge&logo=progressive-web-apps&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps)
-
-**[Deploy to Vercel Production](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fbobtech-IIT%2Fscada-anomaly-detection) | [Open Live Dashboard](https://scada-pwa.vercel.app)**
+### Next-Generation Client-Side Predictive Maintenance OS & Operations Intelligence Engine
 
 ---
 </div>
 
-## 🌐 1. Executive Briefing: The Architecture of Zero-Cloud-Cost SCADA
+## 📊 1. Executive Summary (For the CEO, Directors & B.Com Graduates)
 
-Aegis SCADA is a production-grade, Progressive Web Application (PWA) that shifts the heavy computational load of industrial machine learning—multivariate outlier detection, time-series forecasting, reinforcement learning policy evaluation, and RAG vector searches—**entirely onto the client's browser**.
+In simple terms, **Aegis SCADA is "health insurance" and a "smart doctor" for wind turbines.**
 
-By executing all predictive algorithms locally in TypeScript, Aegis SCADA eliminates expensive cloud GPU server dependencies, minimizes data transit latencies, and maintains 100% data confidentiality under a **Zero-Trust local storage architecture**.
+Wind turbines are highly expensive physical assets. If a turbine's gearbox breaks down (seizes) during operations, it results in:
+1.  **$50,000+** in emergency replacement parts and unscheduled labor.
+2.  **5 to 7 days** of complete shutdown (generating zero electricity and zero revenue).
 
-```mermaid
-graph TD
-    A[Wind Turbine Sensors] -->|Telemetry Stream| B(Aegis SCADA Local Client)
-    subgraph Client-Side Browser Engine
-        B --> C{Isolation Forest}
-        C -->|Normal| D[Keep Running]
-        C -->|Anomaly Score > 0.60| E[LSTM 48H Forecaster]
-        E -->|Overheat Trend Projected| F[Q-Learning RL Agent]
-        F -->|Optimal Action Policy| G[Decision Console]
-        G -->|Shut Down / Maintenance| H[Prevent Seizure]
-        G -->|Run Diagnostics| I[Reset Health]
-        G -->|Do Nothing| J[Exp. Degradation]
-    end
-    B -.->|Local Vectors| K(Local Document Store)
-    K -.->|Cosine Similarity RAG| L(BYOK LLM Brain)
-```
+### 💡 The Aegis Solution (Value Proposition)
+Aegis listens to the turbine's "heartbeat" (speed, temperature, and vibration) using machine learning algorithms. 
+*   **Predictive Alerting**: It flags anomalies days in advance, allowing managers to schedule a quick **$5,000 diagnostic/lubrication check** before a catastrophic failure occurs.
+*   **Net Savings**: This saves **$45,000 in net profit** per prevented incident.
+*   **Zero IT Cloud Cost**: Traditionally, running complex AI models requires renting expensive GPU servers ($2,500/month). Aegis is engineered to run **100% inside the user's web browser**. All data processing, forecasting, and calculations occur on the client side, reducing cloud overhead to **$0**.
+*   **100% Data Privacy**: Since the algorithms run locally, sensitive telemetry and operating manuals never leave the organization. API keys for optional AI brains are stored securely inside the browser's `localStorage` (Zero-Knowledge Architecture).
 
 ---
 
-## 💼 2. Business Value & Financial Audit (For the Head of IT & CFO)
+## 🏭 2. The Real-World Scenario: Dealing with Messy Wind Farm Data
 
-Traditional reactive maintenance schedules result in unplanned outages that damage components and drain company resources. Aegis SCADA transitions your operations to a high-margin predictive framework:
+In reality, sensors on a wind turbine do not export clean, formatted data. Real-world telemetry streams are highly corrupted and disorganized:
+*   **Unit Suffixes**: Sensors write values with suffixes like `12.4 rpm`, `64.2 C`, `3.25 mm/s!!`, or `0.54 MW` (Megawatts).
+*   **Operator Notes & Typos**: Logs contain scribbles, missing values marked as `--`, or sensor failure errors like `#ERROR` and `#REF`.
+*   **Varying Delimiters**: Files are separated by tabs, semicolons, vertical bars, or spaces.
+*   **Data Size**: Parsing thousands of messy rows directly in a browser can freeze the UI.
 
-| Metric | Traditional Reactive Operations | Aegis SCADA Predictive Operations |
+### 🧼 The Aegis Two-Stage Data Refiner
+To solve this, Aegis deploys a hybrid parsing system:
+1.  **Stage 1: AI Heuristic Schema Extraction**: The client uploads the messy log. The app extracts a small 30-row snippet and sends it to the server proxy. An AI brain (routed through the OpenRouter Free API tier) analyzes the format, detects the delimiter, maps column headers to variables, and identifies scaling multipliers (e.g. converting Megawatts to Kilowatts).
+2.  **Stage 2: Deterministic Local Cleaning & 10-Step EDA**: Armed with the AI's mapping profile, the browser cleans all 10,000+ rows locally in milliseconds using regex filters, imputes missing values with forward-fill averages, and displays a **10-Step Exploratory Data Analysis (EDA)** checklist with a final **Data Health Score (0-100%)**.
+
+---
+
+## 📋 3. Ingestion Guide: What to Ask the Wind Farm Operators to Share
+
+To run Aegis on real-world turbine data, request the wind farm operators or SCADA engineers to export a CSV or TXT file. 
+
+The ideal template contains the following **6 columns**:
+
+| Column Name | Type | Description / Units |
 | :--- | :--- | :--- |
-| **Unplanned Bearing Seizure Cost** | **$50,000** (Replacement parts + labor) | **$0** (Prevented via early alerts) |
-| **Typical Downtime per Incident** | **5 - 7 Days** (Unscheduled repair queue) | **8 Hours** (Scheduled maintenance window) |
-| **Scheduled Diagnostics Cost** | **$0** (Ignored until complete failure) | **$5,000** (Lubrication, shaft alignment) |
-| **Cloud Computation GPU Costs** | **$2,500/Month** (Hosted ML servers) | **$0/Month** (100% Client-Side JS/TS execution) |
-| **Data Privacy Audits** | High Risk (SOPs & raw telemetry sent to cloud) | **Zero-Knowledge** (API keys stored locally in `localStorage`) |
+| **`timestamp`** | String | The date and time of the reading (ISO or standard format, e.g., `YYYY-MM-DD HH:MM:SS`) |
+| **`rotor_rpm`** | Number | The rotation speed of the turbine hub (in Rotations Per Minute) |
+| **`gearbox_temp_c`** | Number | The temperature inside the gearbox casing (in Celsius) |
+| **`vibration_mm_s`** | Number | The shaft or bearing vibration amplitude (in Millimeters per Second) |
+| **`wind_speed_ms`** | Number | The ambient wind velocity hitting the blades (in Meters per Second) |
+| **`active_power_kw`** | Number | The actual electricity output generated by the turbine (in Kilowatts) |
 
-> **Net Financial Outcome**: Aegis SCADA generates an average of **$45,000 in net savings** per prevented mechanical breakdown while operating at **$0 cloud overhead costs**.
+> 💡 **Note**: If the operators share a file with different column names (e.g., `TIME_STAMP`, `ROTOR-SPEED`, `SHAFT_VIBR`), Aegis's AI Refiner will automatically detect, map, and translate them to the standard format.
 
 ---
 
-## 🛠️ 3. Technical Core & Mathematical Deep Dive
+## 🧸 4. How to Use the App (Step-by-Step Walkthrough)
 
-### 3.1. Multivariate Outlier Classification (Isolation Forest)
-Aegis SCADA runs a client-side TypeScript port of the **Isolation Forest** unsupervised algorithm. The model constructs isolation trees ($iTrees$) by recursively selecting random features and split values.
-*   **Path Length $h(x)$**: The number of edges $x$ traverses from the root to an external node.
-*   **Anomaly Score $s(x, n)$**:
+```
+[Overview Tab] ──> Download Messy Telemetry Log
+                       │
+[AI Data Refiner] ──> Upload Log ──> Click 'Refine' ──> View 2D PCA Clusters
+                       │
+[Operations Feed] ──> Toggle 'Working on Real Data' ──> View Flagged Anomalies
+                       │
+[RL Optimizer] ──> Train Agent (Decide Shutdown vs. diagnostics)
+                       │
+[Reports Hub] ──> Compile AI Executive Briefing & Export PDF Report
+```
+
+1.  **Get Test Data**: Go to the **Overview** tab, scroll to the **Interactive Playground**, and download the **Messy Telemetry Logs** sample.
+2.  **Refine Messy Data**: Go to the **AI Data Refiner** tab, upload the file, and click **Refine & Profile**. The 10-step EDA logs will verify the database quality, standardize the units, and plot a 2D **PCA scatter chart** grouping normal points (green) and anomaly clusters (red).
+3.  **Feed Operations**: In the **Operations Feed**, toggle the radio button to **Working on Real Data?** to feed the newly cleaned logs into the monitoring feed.
+4.  **Optimize Decisions**: Go to the **RL Optimizer** tab. Train the agent offline for 1,000 episodes and click **Step Policy** to watch the virtual scheduler decide when to keep running (to capture high grid prices) and when to shut down for diagnostics (to avoid high wear rates).
+5.  **Compile & Sign off**: Go to the **Reports Hub**, click **Compile AI Briefing** to generate an executive risk assessment using your BYOK settings, and click **Download CEO Report** to export a dark-themed, glassmorphic 2-page PDF document complete with sign-off lines for the Senior Director.
+
+---
+
+## 🧠 5. Under the Hood: Core Machine Learning Engines (For Developers)
+
+Aegis SCADA implements a client-side predictive pipeline written in pure TypeScript:
+
+### 5.1. Anomaly Detection (Isolation Forest)
+*   Builds an ensemble of isolation trees ($iTrees$) on numeric telemetry features.
+*   Calculates path lengths to score anomalies. Path lengths $\ge 0.60$ trigger a warning:
     $$s(x, n) = 2^{-\frac{E(h(x))}{c(n)}}$$
-    Where $E(h(x))$ is the average path length across all trees, and $c(n)$ is the average path length of an unsuccessful search in a Binary Search Tree with $n$ nodes.
-*   **Thresholding**: Any SCADA record scoring $s(x, n) \ge 0.60$ is flagged as an anomaly, automatically trigger-loading the LSTM forecaster.
 
-### 3.2. TypeScript Eigenvector PCA Solver
-To visualize multidimensional anomalies (Rotor RPM, Gearbox Temp, Bearing Vibration), Aegis SCADA standardizes features to a mean of $0$ and standard deviation of $1$, constructs the Covariance Matrix:
-$$\Sigma = \frac{1}{n-1} X_{\text{scaled}}^T X_{\text{scaled}}$$
-It solves for the top eigenvalues and eigenvectors (PC1 & PC2) client-side using the **Power Iteration Method** and matrix **Hotelling Deflation**:
-$$\Sigma_{\text{deflated}} = \Sigma - \lambda_1 v_1 v_1^T$$
-This projects the 3D telemetry space onto a 2D scatter plot in real-time.
+### 5.2. Dimensionality Reduction (Power Iteration PCA)
+*   Standardizes telemetry matrices and computes the $3 \times 3$ covariance matrix.
+*   Runs **Power Iteration** to extract the dominant eigenvector (PC1), applies **Hotelling Deflation** to subtract the PC1 projection, and solves for the second eigenvector (PC2) to plot multivariate data on a 2D scatter chart.
 
-```mermaid
-graph LR
-    A[Messy Text Logs] -->|Regex Sanitizer| B[Standard Templates]
-    B -->|Z-Score Standardizer| C[Scaled Feature Matrix]
-    C -->|Covariance Matrix| D[Power Iteration Solver]
-    D -->|PC1 Eigenvector| E[Hotelling Deflation]
-    E -->|PC2 Eigenvector| F[2D Recharts Scatter Plot]
-```
+### 5.3. Autonomous Scheduler (Q-Learning Reinforcement Learning)
+*   Updates state-action values using the temporal-difference Bellman equation:
+    $$Q(s, a) \leftarrow Q(s, a) + \alpha \left[ r + \gamma \max_{a'} Q(s', a') - Q(s, a) \right]$$
+*   Decays exploration rate ($\epsilon$) to transition from environmental discovery to optimal policy exploitation (maximizing grid revenue vs. maintenance costs).
 
-### 3.3. Autoregressive Forecaster (Simulated LSTM)
-When an anomaly is flagged, a client-side sequence model projects temperature trajectories 48 hours into the future, computing rolling confidence intervals:
-$$\hat{y}_{t+k} = f(y_{t+k-1}, y_{t+k-2}, \dots) \pm z_{\alpha/2} \cdot \sigma_k$$
-Where $\sigma_k$ scales based on the cumulative forecast horizon. If the trend exceeds $85^\circ\text{C}$, the UI prompts the Reinforcement Learning agent to run a policy check.
-
-### 3.4. Tabular Reinforcement Learning Scheduler (Q-Learning)
-The agent matches states $s$ (determined by Anomaly Score, Hours to Failure, and Grid Power Prices) to actions $a \in \{\text{Keep Running}, \text{Run Diagnostics}, \text{Shut Down}\}$. It updates the Q-table using the Bellman Equation:
-$$Q(s, a) \leftarrow Q(s, a) + \alpha \left[ r + \gamma \max_{a'} Q(s', a') - Q(s, a) \right]$$
-*   **Rewards**: Running yields profit based on grid price, diagnostics cost $-\$50$, shutdowns cost $-\$250$, and bearing seizures penalize the environment with $-\$500$.
-*   The agent trains locally in milliseconds, converging on policies that schedule maintenance during periods of low grid prices.
+### 5.4. Document Context RAG (Vector Chunker)
+*   Performs local text chunking (800-character segments with 100-character overlaps).
+*   Computes local cosine-similarity metrics to feed matching context paragraphs directly to the AI Chat interface.
 
 ---
 
-## 🧼 4. The AI Data Refiner & 10-Step EDA Pipeline
+## 💻 6. Local Installation & Development
 
-If you upload raw files, scribbles, or corrupted CSVs filled with unit suffixes (e.g. `rpm`, `C`, `MW`), Aegis resolves it in a hybrid two-stage clean:
+To run the SCADA PWA locally on your machine:
 
-```
-[Messy Upload] ──> [AI Agent API] ──> [Extracts JSON Column Mapping & Units]
-                          │
-[2D PCA Plot]  <── [Local RegEx Clean & Imputation] <── [10-Step EDA Logs]
-```
-
-1.  **Stage 1: AI Heuristic Mapping**: The client sends the first 30 lines of the messy file to the server proxy `/api/clean`. An LLM (defaulting to OpenRouter's free Gemma-2-9b-it) identifies the delimiter, column index mapping, and required unit conversions (e.g. Megawatts to Kilowatts multipliers).
-2.  **Stage 2: Deterministic Parsing**: The browser uses this JSON mapping rule to parse all 10,000 rows in milliseconds. It runs through a **10-Step Exploratory Data Analysis (EDA)** checklist (Ingestion, Imputation, Unit Sanitization, DateTime normalization, etc.) and scores the dataset health from 0 to 100%.
-
----
-
-## 💻 5. Getting Started & Local Development
-
-### 5.1. File structure
-*   `scada-pwa/`: Core Next.js App Router workspace.
-    *   `src/lib/models/`: Core TS models (`isolationForest.ts`, `pca.ts`, `lstmForecast.ts`, `rlAgent.ts`).
-    *   `src/lib/rag/`: Local vector indexing engine (`vectorStore.ts`).
-    *   `src/lib/api/`: Unified AI brain API connectors (`llm.ts`, `/api/clean/route.ts`).
-    *   `src/app/`: Next.js pages, CSS rules, and layouts.
-    *   `public/`: Service worker offline scripts (`sw.js`) and manifests.
-*   `scada-anomaly-detection/`: Legacy Python CLI telemetry experiments.
-
-### 5.2. Installation & Run
-Navigate into the PWA directory and launch the dev environment:
-```bash
-cd scada-pwa
-npm install
-npm run dev
-```
-Open [http://localhost:3000](http://localhost:3000) in your browser.
-
-### 5.3. Vercel Scoped Deploy
-To deploy your own copy directly to your production target:
-```bash
-vercel --prod --yes --scope bobtech-iits-projects
-```
-
----
-
-## 🔒 6. Zero-Knowledge Security & BYOK AI Brain
-Aegis SCADA is designed with privacy as a priority. By default, it falls back to the **OpenRouter Free API** (automatically picking any available free model). 
-
-For advanced operations, users can input their own keys in the **Settings** panel for **OpenAI**, **Gemini**, or **Anthropic**. All keys are saved strictly to the client's `localStorage` and never hit cloud logs.
+1.  **Clone & Navigate**:
+    ```bash
+    git clone https://github.com/bobtech-IIT/scada-anomaly-detection.git
+    cd scada-anomaly-detection/scada-pwa
+    ```
+2.  **Install Node Modules**:
+    ```bash
+    npm install
+    ```
+3.  **Run Development Server**:
+    ```bash
+    npm run dev
+    ```
+4.  **Build Production Bundle**:
+    ```bash
+    npm run build
+    ```
