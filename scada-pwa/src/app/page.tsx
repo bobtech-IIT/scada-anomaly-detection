@@ -1996,28 +1996,26 @@ TIME_STAMP; ROTOR-SPEED; GEARBOX_OIL_TEMP; SHAFT_VIBR; WIND_VELOCITY; ACTIVE_POW
         )}
 
       {/* Hidden Offscreen Container for PDF screenshot captures */}
-      <div style={{ position: "absolute", left: "-9999px", top: "-9999px", width: "800px", height: "400px", overflow: "hidden" }}>
-        <div ref={pdfForecastChartRef} style={{ width: "800px", height: "400px", background: "#0b1528", padding: "20px" }}>
-          <h3 style={{ color: "#ffffff", marginBottom: "15px", fontFamily: "sans-serif", fontSize: "16px", fontWeight: "bold" }}>
+      <div style={{ position: "absolute", left: "-9999px", top: "-9999px", width: "750px", height: "380px", overflow: "hidden" }}>
+        <div ref={pdfForecastChartRef} style={{ width: "750px", height: "380px", background: "#ffffff", padding: "20px", border: "1px solid #e2e8f0", borderRadius: "12px" }}>
+          <h3 style={{ color: "#0f172a", marginBottom: "15px", fontFamily: "sans-serif", fontSize: "15px", fontWeight: "bold" }}>
             LSTM Future Gearbox Temperature Forecast (Next 48 Hours)
           </h3>
-          <div style={{ width: "100%", height: "320px" }}>
-            <ResponsiveContainer width="100%" height="100%">
-              <AreaChart data={forecasts} margin={{ top: 10, right: 10, left: 10, bottom: 10 }}>
-                <defs>
-                  <linearGradient id="pdfColorTemp" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#10b981" stopOpacity={0.2}/>
-                    <stop offset="95%" stopColor="#10b981" stopOpacity={0}/>
-                  </linearGradient>
-                </defs>
-                <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" />
-                <XAxis dataKey="timestamp" tick={false} stroke="rgba(255,255,255,0.3)" />
-                <YAxis domain={['auto', 'auto']} stroke="rgba(255,255,255,0.3)" />
-                <Area type="monotone" dataKey="gearbox_temp_c" stroke="#10b981" strokeWidth={2} fillOpacity={1} fill="url(#pdfColorTemp)" />
-                <Area type="monotone" dataKey="gearbox_temp_c_upper" stroke="#ef4444" strokeWidth={1} strokeDasharray="5 5" fill="none" dot={false} />
-                <Area type="monotone" dataKey="gearbox_temp_c_lower" stroke="#10b981" strokeWidth={1} strokeDasharray="5 5" fill="none" dot={false} />
-              </AreaChart>
-            </ResponsiveContainer>
+          <div style={{ width: "710px", height: "300px" }}>
+            <AreaChart width={710} height={290} data={forecasts} margin={{ top: 10, right: 10, left: 10, bottom: 10 }}>
+              <defs>
+                <linearGradient id="pdfColorTemp" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor="#10b981" stopOpacity={0.2}/>
+                  <stop offset="95%" stopColor="#10b981" stopOpacity={0}/>
+                </linearGradient>
+              </defs>
+              <CartesianGrid strokeDasharray="3 3" stroke="rgba(0,0,0,0.06)" />
+              <XAxis dataKey="timestamp" tick={false} stroke="#64748b" />
+              <YAxis domain={['auto', 'auto']} stroke="#64748b" />
+              <Area type="monotone" dataKey="gearbox_temp_c" name="Predicted" stroke="#10b981" strokeWidth={2.5} fillOpacity={1} fill="url(#pdfColorTemp)" isAnimationActive={false} />
+              <Area type="monotone" dataKey="gearbox_temp_c_upper" name="Upper Conf" stroke="#ef4444" strokeWidth={1.2} strokeDasharray="5 5" fill="none" dot={false} isAnimationActive={false} />
+              <Area type="monotone" dataKey="gearbox_temp_c_lower" name="Lower Conf" stroke="#10b981" strokeWidth={1.2} strokeDasharray="5 5" fill="none" dot={false} isAnimationActive={false} />
+            </AreaChart>
           </div>
         </div>
       </div>
