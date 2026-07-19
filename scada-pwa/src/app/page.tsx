@@ -119,7 +119,6 @@ export default function SCADAPWADashboard() {
   // Charts DOM references for PDF screenshot inserts
   const powerCurveRef = useRef<HTMLDivElement>(null);
   const forecastChartRef = useRef<HTMLDivElement>(null);
-  const pdfForecastChartRef = useRef<HTMLDivElement>(null);
 
   // Initialize simulated database
   useEffect(() => {
@@ -679,231 +678,303 @@ TIME_STAMP; ROTOR-SPEED; GEARBOX_OIL_TEMP; SHAFT_VIBR; WIND_VELOCITY; ACTIVE_POW
 
     const doc = new jsPDF("p", "mm", "a4");
     const pageWidth = doc.internal.pageSize.getWidth();
+    const pageHeight = doc.internal.pageSize.getHeight();
     
-    // Page 1 Header Banner
-    doc.setFillColor(11, 15, 25);
-    doc.rect(0, 0, pageWidth, 30, "F");
+    // Page 1 Dark Background Fill
+    doc.setFillColor(7, 11, 19);
+    doc.rect(0, 0, pageWidth, pageHeight, "F");
+
+    // Helper: Draw Glassmorphic Panel
+    const drawGlassPanel = (x: number, y: number, w: number, h: number, borderCol = [16, 185, 129]) => {
+      // Dark slate translucent background
+      doc.setFillColor(15, 23, 42);
+      // Emerald/Teal translucent border
+      doc.setDrawColor(borderCol[0], borderCol[1], borderCol[2]);
+      doc.setLineWidth(0.35);
+      doc.rect(x, y, w, h, "FD");
+    };
+
+    // Header Glow Banner (top navbar style)
+    drawGlassPanel(12, 12, pageWidth - 24, 20, [16, 185, 129]);
     
     doc.setTextColor(255, 255, 255);
     doc.setFont("helvetica", "bold");
-    doc.setFontSize(18);
-    doc.text("AEGIS SCADA | PREDICTIVE MAINTENANCE REPORT", 12, 18);
+    doc.setFontSize(16);
+    doc.text("AEGIS SCADA | EXECUTIVE MAINTENANCE BRIEFING", 18, 20);
+    
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(8.5);
+    doc.setTextColor(167, 243, 208); // Mint green subtitle
+    doc.text(`CONFIDENTIAL TELEMETRY REPORT | CORE AUDIT ENGINE | GENERATED: ${new Date().toLocaleString()}`, 18, 26);
+
+    // Section 1 Panel: Executive Briefing
+    drawGlassPanel(12, 38, pageWidth - 24, 45, [6, 182, 212]); // Cyan border
+    
+    doc.setTextColor(6, 182, 212); // Cyan section header
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(11);
+    doc.text("1. EXECUTIVE ASSESSMENT & CRITICAL WARNING", 18, 44);
     
     doc.setFont("helvetica", "normal");
     doc.setFontSize(9);
-    doc.setTextColor(148, 163, 184);
-    doc.text(`CONFIDENTIAL - FOR CEO & DIRECTORS | GENERATED: ${new Date().toLocaleString()}`, 12, 25);
-
-    // 1. Executive Briefing Section
-    doc.setTextColor(15, 23, 42);
-    doc.setFont("helvetica", "bold");
-    doc.setFontSize(12);
-    doc.text("1. EXECUTIVE BRIEFING & INCIDENT ASSESSMENT", 12, 42);
-    
-    doc.setDrawColor(226, 232, 240);
-    doc.setLineWidth(0.3);
-    doc.line(12, 45, pageWidth - 12, 45);
-
-    doc.setFont("helvetica", "normal");
-    doc.setFontSize(9.5);
-    doc.setTextColor(51, 65, 85);
+    doc.setTextColor(203, 213, 225); // Light slate text
     
     const summaryText = executiveSummary || `Executive Alert Briefing:\nAn anomaly event has been flagged on wind turbine asset T-402. Operational measurements show a temporary spike in gearbox lubrication temperatures and shaft vibration amplitudes. Outlier classification scoring identifies signature bearing friction degradation trends. Autoregressive LSTM forecasting projects a high probability of alarm thresholds being exceeded in the next 24-48 hours. Early scheduling of asset diagnostics is recommended to avoid critical system seizure.`;
-    const splitSummary = doc.splitTextToSize(summaryText, pageWidth - 24);
-    doc.text(splitSummary, 12, 51);
+    const splitSummary = doc.splitTextToSize(summaryText, pageWidth - 36);
+    doc.text(splitSummary, 18, 50);
 
-    let currentY = 51 + (splitSummary.length * 4.5);
-
-    // 2. Telemetry Details Section
-    doc.setFont("helvetica", "bold");
-    doc.setFontSize(12);
-    doc.setTextColor(15, 23, 42);
-    doc.text("2. TELEMETRY DETAILS & PREDICTIVE SCORING", 12, currentY + 8);
-    doc.line(12, currentY + 11, pageWidth - 12, currentY + 11);
-
-    currentY = currentY + 16;
+    // Section 2 Panel: Telemetry Outliers Details
+    let tableY = 90;
+    drawGlassPanel(12, tableY, pageWidth - 24, 42, [16, 185, 129]); // Emerald border
     
-    doc.setFillColor(241, 245, 249);
-    doc.rect(12, currentY, pageWidth - 24, 6, "F");
-    
-    doc.setFont("helvetica", "bold");
-    doc.setFontSize(8.5);
-    doc.setTextColor(51, 65, 85);
-    doc.text("Parameter", 15, currentY + 4.5);
-    doc.text("Measured Value", 65, currentY + 4.5);
-    doc.text("Normal Range", 115, currentY + 4.5);
-    doc.text("Risk Assessment", 165, currentY + 4.5);
-
-    currentY += 6;
-    doc.rect(12, currentY, pageWidth - 24, 6, "F");
-    doc.setFont("helvetica", "normal");
-    doc.text("Gearbox Temp", 15, currentY + 4.5);
-    doc.setFont("helvetica", "bold");
-    doc.text(`${selectedAnomaly.gearbox_temp_c} °C`, 65, currentY + 4.5);
-    doc.setFont("helvetica", "normal");
-    doc.text("55 - 72 °C", 115, currentY + 4.5);
-    doc.setTextColor(239, 68, 68);
-    doc.text("Critical Overheating", 165, currentY + 4.5);
-    doc.setTextColor(51, 65, 85);
-
-    currentY += 6;
-    doc.text("Gearbox Vibration", 15, currentY + 4.5);
-    doc.setFont("helvetica", "bold");
-    doc.text(`${selectedAnomaly.vibration_mm_s} mm/s`, 65, currentY + 4.5);
-    doc.setFont("helvetica", "normal");
-    doc.text("0.8 - 1.6 mm/s", 115, currentY + 4.5);
-    doc.setTextColor(239, 68, 68);
-    doc.text("Extreme Friction", 165, currentY + 4.5);
-    doc.setTextColor(51, 65, 85);
-
-    currentY += 6;
-    doc.rect(12, currentY, pageWidth - 24, 6, "F");
-    doc.text("Rotor RPM", 15, currentY + 4.5);
-    doc.setFont("helvetica", "bold");
-    doc.text(`${selectedAnomaly.rotor_rpm} RPM`, 65, currentY + 4.5);
-    doc.setFont("helvetica", "normal");
-    doc.text("8.0 - 15.5 RPM", 115, currentY + 4.5);
-    doc.setTextColor(34, 197, 94);
-    doc.text("Operational Range", 165, currentY + 4.5);
-    doc.setTextColor(51, 65, 85);
-
-    currentY += 6;
-    doc.text("Isolation Forest Score", 15, currentY + 4.5);
-    doc.setFont("helvetica", "bold");
-    doc.text(`${selectedAnomaly.anomaly_score || 0.85}`, 65, currentY + 4.5);
-    doc.setFont("helvetica", "normal");
-    doc.text("< 0.60 (Normal)", 115, currentY + 4.5);
-    doc.setTextColor(239, 68, 68);
-    doc.text("Outlier Flagged", 165, currentY + 4.5);
-    doc.setTextColor(51, 65, 85);
-
-    // 2B. SCADA Telemetry Outliers Table
-    currentY += 12;
+    doc.setTextColor(16, 185, 129); // Emerald section header
     doc.setFont("helvetica", "bold");
     doc.setFontSize(11);
-    doc.text("SCADA TELEMETRY HISTORICAL OUTLIERS LOG", 12, currentY);
-    doc.line(12, currentY + 2.5, pageWidth - 12, currentY + 2.5);
+    doc.text("2. EVENT TELEMETRY DATA & OUTLIER SCORING", 18, tableY + 6);
 
-    currentY += 6;
-    doc.setFillColor(241, 245, 249);
-    doc.rect(12, currentY, pageWidth - 24, 6, "F");
+    tableY += 10;
+    // Table Header
+    doc.setFillColor(30, 41, 59);
+    doc.rect(16, tableY, pageWidth - 32, 5, "F");
     doc.setFont("helvetica", "bold");
     doc.setFontSize(8);
-    doc.text("Outlier Timestamp", 15, currentY + 4.5);
-    doc.text("RPM", 65, currentY + 4.5);
-    doc.text("Gearbox Temp", 100, currentY + 4.5);
-    doc.text("Vibration", 140, currentY + 4.5);
-    doc.text("Score", 175, currentY + 4.5);
+    doc.setTextColor(167, 243, 208); // Mint headings
+    doc.text("Parameter Name", 20, tableY + 3.8);
+    doc.text("Measured Value", 70, tableY + 3.8);
+    doc.text("Standard Range", 115, tableY + 3.8);
+    doc.text("Risk Evaluation", 160, tableY + 3.8);
+
+    // Row 1: Gearbox Temp
+    tableY += 5;
+    doc.setFont("helvetica", "normal");
+    doc.setTextColor(248, 250, 252);
+    doc.text("Gearbox Oil Temperature", 20, tableY + 3.8);
+    doc.setFont("helvetica", "bold");
+    doc.text(`${selectedAnomaly.gearbox_temp_c} °C`, 70, tableY + 3.8);
+    doc.setFont("helvetica", "normal");
+    doc.text("55.0 - 72.0 °C", 115, tableY + 3.8);
+    doc.setTextColor(239, 68, 68); // Red
+    doc.text("Critical Overheat", 160, tableY + 3.8);
+
+    // Row 2: Vibration
+    tableY += 5;
+    doc.setFillColor(30, 41, 59);
+    doc.rect(16, tableY, pageWidth - 32, 5, "F");
+    doc.setTextColor(248, 250, 252);
+    doc.text("Bearing Vibration Level", 20, tableY + 3.8);
+    doc.setFont("helvetica", "bold");
+    doc.text(`${selectedAnomaly.vibration_mm_s} mm/s`, 70, tableY + 3.8);
+    doc.setFont("helvetica", "normal");
+    doc.text("0.80 - 1.60 mm/s", 115, tableY + 3.8);
+    doc.setTextColor(239, 68, 68); // Red
+    doc.text("Friction Anomaly", 160, tableY + 3.8);
+
+    // Row 3: Rotor RPM
+    tableY += 5;
+    doc.setTextColor(248, 250, 252);
+    doc.text("Rotor Hub Rotation Speed", 20, tableY + 3.8);
+    doc.setFont("helvetica", "bold");
+    doc.text(`${selectedAnomaly.rotor_rpm} RPM`, 70, tableY + 3.8);
+    doc.setFont("helvetica", "normal");
+    doc.text("8.00 - 15.50 RPM", 115, tableY + 3.8);
+    doc.setTextColor(34, 197, 94); // Green
+    doc.text("Operational", 160, tableY + 3.8);
+
+    // Row 4: Score
+    tableY += 5;
+    doc.setFillColor(30, 41, 59);
+    doc.rect(16, tableY, pageWidth - 32, 5, "F");
+    doc.setTextColor(248, 250, 252);
+    doc.text("Isolation Forest Outlier Score", 20, tableY + 3.8);
+    doc.setFont("helvetica", "bold");
+    doc.text(`${selectedAnomaly.anomaly_score || 0.85}`, 70, tableY + 3.8);
+    doc.setFont("helvetica", "normal");
+    doc.text("< 0.60 Index", 115, tableY + 3.8);
+    doc.setTextColor(239, 68, 68); // Red
+    doc.text("Outlier Flagged", 160, tableY + 3.8);
+
+    // Section 2B Panel: Recent Outliers Table
+    let table2Y = 138;
+    drawGlassPanel(12, table2Y, pageWidth - 24, 42, [6, 182, 212]); // Cyan border
+    
+    doc.setTextColor(6, 182, 212); // Cyan section header
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(11);
+    doc.text("SCADA HISTORICAL OUTLIERS RECORD FEED", 18, table2Y + 6);
+
+    table2Y += 10;
+    // Table Header
+    doc.setFillColor(30, 41, 59);
+    doc.rect(16, table2Y, pageWidth - 32, 5, "F");
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(8);
+    doc.setTextColor(167, 243, 208); // Mint headings
+    doc.text("Outlier Date/Time", 20, table2Y + 3.8);
+    doc.text("Rotor RPM", 68, table2Y + 3.8);
+    doc.text("Gearbox Temp", 100, table2Y + 3.8);
+    doc.text("Bearing Vib", 135, table2Y + 3.8);
+    doc.text("IF Score", 170, table2Y + 3.8);
 
     const recentAnomalies = detectedAnomalies.length > 0 ? detectedAnomalies.slice(-5) : scadaData.filter(r => r.is_anomaly).slice(-5);
     if (recentAnomalies.length === 0) {
-      currentY += 6;
+      table2Y += 5;
       doc.setFont("helvetica", "normal");
-      doc.text("No historical outlier log entries found in active memory feed.", 15, currentY + 4.5);
+      doc.setTextColor(203, 213, 225);
+      doc.text("No historical outlier log entries found in active memory feed.", 20, table2Y + 3.8);
     } else {
-      recentAnomalies.forEach((anom) => {
-        currentY += 6;
+      recentAnomalies.forEach((anom, idx) => {
+        table2Y += 5;
+        if (idx % 2 === 1) {
+          doc.setFillColor(30, 41, 59);
+          doc.rect(16, table2Y, pageWidth - 32, 5, "F");
+        }
         doc.setFont("helvetica", "normal");
-        const dateStr = new Date(anom.timestamp).toLocaleString();
-        doc.text(dateStr, 15, currentY + 4.5);
-        doc.text(`${anom.rotor_rpm} RPM`, 65, currentY + 4.5);
-        doc.text(`${anom.gearbox_temp_c} °C`, 100, currentY + 4.5);
-        doc.text(`${anom.vibration_mm_s} mm/s`, 140, currentY + 4.5);
-        doc.text(`${anom.anomaly_score || 0.85}`, 175, currentY + 4.5);
+        doc.setTextColor(248, 250, 252);
+        doc.text(new Date(anom.timestamp).toLocaleString(), 20, table2Y + 3.8);
+        doc.text(`${anom.rotor_rpm} RPM`, 68, table2Y + 3.8);
+        doc.text(`${anom.gearbox_temp_c} °C`, 100, table2Y + 3.8);
+        doc.text(`${anom.vibration_mm_s} mm/s`, 135, table2Y + 3.8);
+        doc.text(`${anom.anomaly_score || 0.85}`, 170, table2Y + 3.8);
       });
     }
 
-    // Page 2 Layout
+    // Watermark at bottom of Page 1
+    doc.setFont("helvetica", "italic");
+    doc.setFontSize(7);
+    doc.setTextColor(71, 85, 105);
+    doc.text("AEGIS PREDICTIVE OS - PAGE 1 OF 2 - CLOUD RECONCILED LOCAL LEDGER", 12, pageHeight - 6);
+
+    // ==========================================
+    // PAGE 2 (Dark Theme)
+    // ==========================================
     doc.addPage();
     
-    doc.setFillColor(11, 15, 25);
-    doc.rect(0, 0, pageWidth, 15, "F");
+    // Page 2 Background Fill
+    doc.setFillColor(7, 11, 19);
+    doc.rect(0, 0, pageWidth, pageHeight, "F");
+
+    // Header Glow Banner (top navbar style)
+    drawGlassPanel(12, 12, pageWidth - 24, 20, [6, 182, 212]);
+    
     doc.setTextColor(255, 255, 255);
     doc.setFont("helvetica", "bold");
-    doc.setFontSize(10);
-    doc.text("AEGIS SCADA | PREDICTIVE FORECASTING & FINANCIAL AUDIT", 12, 10);
-
-    // 3. LSTM Future Temperature Forecast Chart
-    doc.setTextColor(15, 23, 42);
-    doc.setFontSize(12);
-    doc.text("3. LSTM TIME SERIES TEMPERATURE FORECAST (NEXT 48H)", 12, 28);
-    doc.line(12, 31, pageWidth - 12, 31);
-
-    if (pdfForecastChartRef.current) {
-      try {
-        const canvas = await html2canvas(pdfForecastChartRef.current, { scale: 2 });
-        const imgData = canvas.toDataURL("image/png");
-        doc.addImage(imgData, "PNG", 12, 35, pageWidth - 24, 75);
-      } catch (err) {
-        console.error("Failed to render offscreen chart to canvas", err);
-      }
-    }
-
-    // 4. Reinforcement Learning Financial Audit Ledger
-    const rlY = 120;
-    doc.setFont("helvetica", "bold");
-    doc.setFontSize(12);
-    doc.text("4. REINFORCEMENT LEARNING FINANCIAL AUDIT LEDGER", 12, rlY);
-    doc.line(12, rlY + 3, pageWidth - 12, rlY + 3);
-
-    let tableY = rlY + 10;
-    doc.setFillColor(241, 245, 249);
-    doc.rect(12, tableY, pageWidth - 24, 6, "F");
-    doc.setFont("helvetica", "bold");
-    doc.setFontSize(8);
-    doc.text("Maintenance Strategy", 15, tableY + 4.5);
-    doc.text("Operational Risk Status", 65, tableY + 4.5);
-    doc.text("Estimated Cost", 115, tableY + 4.5);
-    doc.text("Net Savings / Benefit", 165, tableY + 4.5);
-
-    // Row 1: Unplanned Seizure
-    tableY += 6;
-    doc.setFont("helvetica", "normal");
-    doc.text("Unplanned Seizure Stop", 15, tableY + 4.5);
-    doc.text("High (Mechanical Failure)", 65, tableY + 4.5);
-    doc.text("$50,000", 115, tableY + 4.5);
-    doc.setTextColor(220, 38, 38);
-    doc.text("-$50,000 Capital Loss", 165, tableY + 4.5);
-    doc.setTextColor(51, 65, 85);
-
-    // Row 2: Scheduled Diagnostics
-    tableY += 6;
-    doc.setFillColor(248, 250, 252);
-    doc.rect(12, tableY, pageWidth - 24, 6, "F");
-    doc.text("Scheduled Diagnostics", 15, tableY + 4.5);
-    doc.text("Low (Lubrication/Alignment)", 65, tableY + 4.5);
-    doc.text("$5,000", 115, tableY + 4.5);
-    doc.setTextColor(22, 163, 74);
-    doc.text("+$45,000 Net Savings", 165, tableY + 4.5);
-    doc.setTextColor(51, 65, 85);
-
-    // Row 3: Scheduled Shutdown
-    tableY += 6;
-    doc.text("Controlled Maintenance stop", 15, tableY + 4.5);
-    doc.text("Zero Risk (Planned downtime)", 65, tableY + 4.5);
-    doc.text("$250 (Grid Penalty)", 115, tableY + 4.5);
-    doc.text("Resets Wear Metrics", 165, tableY + 4.5);
-
-    // Audit summary text
-    tableY += 12;
-    doc.setFont("helvetica", "italic");
-    doc.setFontSize(8.5);
-    doc.text("Audit Verdict: Q-learning policies converge to schedule shutdowns during low grid prices, preventing seizures at 10% of breakdown cost.", 12, tableY);
-
-    const signOffY = 240;
-    doc.line(12, signOffY, pageWidth - 12, signOffY);
-    doc.setFont("helvetica", "bold");
-    doc.setFontSize(9);
-    doc.text("Aegis Predictive Engine Authority Signoff:", 12, signOffY + 6);
+    doc.setFontSize(16);
+    doc.text("AEGIS SCADA | DATA INGESTION & AUDIT LEDGER", 18, 20);
     
     doc.setFont("helvetica", "normal");
-    doc.text("CEO / Chief Engineer Checklist: ______________", 12, signOffY + 12);
-    doc.text("Risk Operations Director: ______________", 110, signOffY + 12);
+    doc.setFontSize(8.5);
+    doc.setTextColor(167, 243, 208); // Mint green subtitle
+    doc.text(`INGESTION CAPACITY STATEMENT | REINFORCEMENT LEARNING RISK AUDIT`, 18, 26);
 
+    // 3. Ingestion Summary & System Capabilities Panel
+    let ingY = 38;
+    drawGlassPanel(12, ingY, pageWidth - 24, 52, [16, 185, 129]); // Emerald border
+    
+    doc.setTextColor(16, 185, 129); // Emerald section header
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(11);
+    doc.text("3. INGESTION DATA SOURCE & PROCESSING SUMMARY", 18, ingY + 6);
+
+    ingY += 10;
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(9);
+    doc.setTextColor(203, 213, 225);
+
+    // Ingestion Parameters List
+    const sourceString = realDataMode ? "Real User-Uploaded Telemetry (Custom CSV)" : "Simulated NREL Wind farm Database (Preloaded Seed)";
+    doc.text(`- Active Data Source Ingested:  ${sourceString}`, 18, ingY + 4);
+    doc.text(`- Total Rows Processed in Current Session:  ${scadaData.length} rows of telemetry logs`, 18, ingY + 10);
+    doc.text(`- Upload Schema Template:  timestamp, rotor_rpm, gearbox_temp_c, vibration_mm_s, wind_speed_ms, active_power_kw`, 18, ingY + 16);
+    doc.text(`- Maximum Ingestion Capacity (Client-Side Parsing):  50,000 telemetry rows (optimized Browser compile)`, 18, ingY + 22);
+    doc.text(`- AI Clean API Sample Window:  30 rows (optimized for token efficiency and proxy response speed)`, 18, ingY + 28);
+    doc.text(`- Backend Analytics Matrix:  Isolation Forest Outliers (100 Trees), Jacobi-rotation 2D PCA Dimension Reduction`, 18, ingY + 34);
+
+    // 4. Reinforcement Learning Financial Audit Ledger Panel
+    let rlY = 96;
+    drawGlassPanel(12, rlY, pageWidth - 24, 46, [6, 182, 212]); // Cyan border
+    
+    doc.setTextColor(6, 182, 212); // Cyan section header
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(11);
+    doc.text("4. REINFORCEMENT LEARNING RISK OPTIMIZATION LEDGER", 18, rlY + 6);
+
+    rlY += 10;
+    // Table Header
+    doc.setFillColor(30, 41, 59);
+    doc.rect(16, rlY, pageWidth - 32, 5, "F");
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(8);
+    doc.setTextColor(167, 243, 208); // Mint headings
+    doc.text("Operational Action Taken", 20, rlY + 3.8);
+    doc.text("Friction Risk", 72, rlY + 3.8);
+    doc.text("Associated Cost", 120, rlY + 3.8);
+    doc.text("Net Savings / Loss", 160, rlY + 3.8);
+
+    // Row 1: Unplanned Seizure
+    rlY += 5;
+    doc.setFont("helvetica", "normal");
+    doc.setTextColor(248, 250, 252);
+    doc.text("Unplanned Seizure (Do Nothing)", 20, rlY + 3.8);
+    doc.text("High Failure Risk", 72, rlY + 3.8);
+    doc.text("$50,000", 120, rlY + 3.8);
+    doc.setTextColor(239, 68, 68); // Red
+    doc.text("-$50,000 Loss", 160, rlY + 3.8);
+
+    // Row 2: Scheduled Diagnostics
+    rlY += 5;
+    doc.setFillColor(30, 41, 59);
+    doc.rect(16, rlY, pageWidth - 32, 5, "F");
+    doc.setTextColor(248, 250, 252);
+    doc.text("Scheduled Diagnostics Stop", 20, rlY + 3.8);
+    doc.text("Low Risk (Maintenance)", 72, rlY + 3.8);
+    doc.text("$5,000", 120, rlY + 3.8);
+    doc.setTextColor(34, 197, 94); // Green
+    doc.text("+$45,000 Net Savings", 160, rlY + 3.8);
+
+    // Row 3: Controlled Shutdown
+    rlY += 5;
+    doc.setTextColor(248, 250, 252);
+    doc.text("Controlled Shutdown Stop", 20, rlY + 3.8);
+    doc.text("Zero Risk", 72, rlY + 3.8);
+    doc.text("$250", 120, rlY + 3.8);
+    doc.setTextColor(248, 250, 252);
+    doc.text("Resets Wear Metrics", 160, rlY + 3.8);
+
+    // Audit summary text
+    rlY += 10;
     doc.setFont("helvetica", "italic");
-    doc.setFontSize(7.5);
-    doc.setTextColor(148, 163, 184);
-    doc.text("Report compiled autonomously by Aegis SCADA local system engine. Authorized access only.", 12, signOffY + 24);
+    doc.setFontSize(8.5);
+    doc.setTextColor(203, 213, 225);
+    doc.text("Economic Summary: Q-learning policies schedules stop diagnostic resets at 10% of unplanned repair cost, saving $45,000.", 16, rlY);
+
+    // 5. Senior Director Sign-off Protocol Panel
+    let signY = 150;
+    drawGlassPanel(12, signY, pageWidth - 24, 38, [16, 185, 129]); // Emerald border
+    
+    doc.setTextColor(16, 185, 129); // Emerald section header
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(11);
+    doc.text("5. EXECUTIVE PROTOCOL SIGN-OFF CHECKLIST", 18, signY + 6);
+
+    signY += 10;
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(8.5);
+    doc.setTextColor(248, 250, 252);
+    doc.text("I hereby certify that the telemetry ingestion audit, Isolation Forest outliers risk scoring, and Q-learning cost savings ledgers", 18, signY + 2);
+    doc.text("have been formally verified. Immediate scheduling of preventive maintenance override is approved for execution.", 18, signY + 6);
+
+    doc.setFont("helvetica", "bold");
+    doc.text("Senior Director, Operations & Execution: ________________________", 18, signY + 16);
+    doc.text("Date: ______________", 145, signY + 16);
+    
+    doc.text("Chief Maintenance Risk Engineer: ________________________", 18, signY + 24);
+    doc.text("Date: ______________", 145, signY + 24);
+
+    // Watermark at bottom of Page 2
+    doc.setFont("helvetica", "italic");
+    doc.setFontSize(7);
+    doc.setTextColor(71, 85, 105);
+    doc.text("AEGIS PREDICTIVE OS - PAGE 2 OF 2 - SECURE RUNTIME REPORT EXPORT", 12, pageHeight - 6);
 
     const tsStr = typeof selectedAnomaly.timestamp === 'string'
       ? selectedAnomaly.timestamp
@@ -1994,31 +2065,6 @@ TIME_STAMP; ROTOR-SPEED; GEARBOX_OIL_TEMP; SHAFT_VIBR; WIND_VELOCITY; ACTIVE_POW
             </div>
           </div>
         )}
-
-      {/* Hidden Offscreen Container for PDF screenshot captures */}
-      <div style={{ position: "fixed", left: "0px", top: "0px", zIndex: -999, width: "750px", height: "380px", overflow: "hidden", pointerEvents: "none" }}>
-        <div ref={pdfForecastChartRef} style={{ width: "750px", height: "380px", background: "#ffffff", padding: "20px", border: "1px solid #e2e8f0", borderRadius: "12px" }}>
-          <h3 style={{ color: "#0f172a", marginBottom: "15px", fontFamily: "sans-serif", fontSize: "15px", fontWeight: "bold" }}>
-            LSTM Future Gearbox Temperature Forecast (Next 48 Hours)
-          </h3>
-          <div style={{ width: "710px", height: "300px" }}>
-            <AreaChart width={710} height={290} data={forecasts} margin={{ top: 10, right: 10, left: 10, bottom: 10 }}>
-              <defs>
-                <linearGradient id="pdfColorTemp" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#10b981" stopOpacity={0.2}/>
-                  <stop offset="95%" stopColor="#10b981" stopOpacity={0}/>
-                </linearGradient>
-              </defs>
-              <CartesianGrid strokeDasharray="3 3" stroke="rgba(0,0,0,0.06)" />
-              <XAxis dataKey="timestamp" tick={false} stroke="#64748b" />
-              <YAxis domain={['auto', 'auto']} stroke="#64748b" />
-              <Area type="monotone" dataKey="gearbox_temp_c" name="Predicted" stroke="#10b981" strokeWidth={2.5} fillOpacity={1} fill="url(#pdfColorTemp)" isAnimationActive={false} />
-              <Area type="monotone" dataKey="gearbox_temp_c_upper" name="Upper Conf" stroke="#ef4444" strokeWidth={1.2} strokeDasharray="5 5" fill="none" dot={false} isAnimationActive={false} />
-              <Area type="monotone" dataKey="gearbox_temp_c_lower" name="Lower Conf" stroke="#10b981" strokeWidth={1.2} strokeDasharray="5 5" fill="none" dot={false} isAnimationActive={false} />
-            </AreaChart>
-          </div>
-        </div>
-      </div>
 
       </main>
       
