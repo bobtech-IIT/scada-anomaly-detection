@@ -7,7 +7,7 @@
 ---
 </div>
 
-## 📊 1. Executive Summary (For the CEO, Directors & B.Com Graduates)
+## 📊 1. Executive Summary
 
 In simple terms, **Aegis SCADA is "health insurance" and a "smart doctor" for wind turbines.**
 
