@@ -912,7 +912,7 @@ TIME_STAMP; ROTOR-SPEED; GEARBOX_OIL_TEMP; SHAFT_VIBR; WIND_VELOCITY; ACTIVE_POW
   };
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen bg-[#070b13]">
       {/* 1. Floating Top Header Navbar */}
       <header className="mx-4 mt-4 mb-2 z-10">
         <div className="glass-panel rounded-2xl py-3 px-6 flex items-center justify-between shadow-2xl">
@@ -1996,7 +1996,7 @@ TIME_STAMP; ROTOR-SPEED; GEARBOX_OIL_TEMP; SHAFT_VIBR; WIND_VELOCITY; ACTIVE_POW
         )}
 
       {/* Hidden Offscreen Container for PDF screenshot captures */}
-      <div style={{ position: "absolute", left: "-9999px", top: "-9999px", width: "750px", height: "380px", overflow: "hidden" }}>
+      <div style={{ position: "fixed", left: "0px", top: "0px", zIndex: -999, width: "750px", height: "380px", overflow: "hidden", pointerEvents: "none" }}>
         <div ref={pdfForecastChartRef} style={{ width: "750px", height: "380px", background: "#ffffff", padding: "20px", border: "1px solid #e2e8f0", borderRadius: "12px" }}>
           <h3 style={{ color: "#0f172a", marginBottom: "15px", fontFamily: "sans-serif", fontSize: "15px", fontWeight: "bold" }}>
             LSTM Future Gearbox Temperature Forecast (Next 48 Hours)
