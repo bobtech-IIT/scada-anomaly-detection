@@ -2,7 +2,7 @@
 
 # 🛡️ AEGIS SCADA (Autonomous Equipment Guard & Intelligent Scheduler)
 
-### The Advanced Predictive Operations & Maintenance Module of Sorigin AMS (Asset Management System)
+### Next-Gen Industrial Anomaly Detection, Autoregressive Forecasting, Tabular Reinforcement Learning, and Conversational Document RAG — 100% Client-Side.
 
 [![Vercel Deployment](https://img.shields.io/badge/Vercel-Deployed-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://scada-pwa.vercel.app)
 [![Next.js 16](https://img.shields.io/badge/Next.js-16_Turbopack-000000?style=for-the-badge&logo=nextdotjs&logoColor=white)](https://nextjs.org/)

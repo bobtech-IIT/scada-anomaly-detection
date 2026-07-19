@@ -845,9 +845,7 @@ TIME_STAMP; ROTOR-SPEED; GEARBOX_OIL_TEMP; SHAFT_VIBR; WIND_VELOCITY; ACTIVE_POW
               <h1 className="text-xl font-bold tracking-tight text-white font-sans flex items-center">
                 AEGIS <span className="text-emerald-500 ml-1.5 font-light">SCADA</span>
               </h1>
-              <span className="text-[10px] uppercase tracking-widest text-emerald-400 font-medium">
-                Autonomous Equipment Guard & Intelligent Scheduler | Sorigin AMS
-              </span>
+              <span className="text-[10px] uppercase tracking-widest text-emerald-400 font-medium">Predictive Maintenance OS</span>
             </div>
           </div>
           
@@ -907,7 +905,7 @@ TIME_STAMP; ROTOR-SPEED; GEARBOX_OIL_TEMP; SHAFT_VIBR; WIND_VELOCITY; ACTIVE_POW
                 AEGIS <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-400">SCADA OS</span>
               </h2>
               <span className="text-xs font-semibold text-emerald-400 tracking-wider">
-                Autonomous Equipment Guard & Intelligent Scheduler | Core Predictive Module of Sorigin AMS
+                Autonomous Equipment Guard & Intelligent Scheduler
               </span>
               
               <p className="text-sm text-slate-400 max-w-xl leading-relaxed">
