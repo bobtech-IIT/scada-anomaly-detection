@@ -139,6 +139,6 @@ vercel --prod --yes --scope bobtech-iits-projects
 ---
 
 ## 🔒 6. Zero-Knowledge Security & BYOK AI Brain
-Aegis SCADA is designed with privacy as a priority. By default, it falls back to the **OpenRouter Free API** (`google/gemma-2-9b-it:free`). 
+Aegis SCADA is designed with privacy as a priority. By default, it falls back to the **OpenRouter Free API** (automatically picking any available free model). 
 
 For advanced operations, users can input their own keys in the **Settings** panel for **OpenAI**, **Gemini**, or **Anthropic**. All keys are saved strictly to the client's `localStorage` and never hit cloud logs.
