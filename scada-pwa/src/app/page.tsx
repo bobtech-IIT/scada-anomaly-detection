@@ -845,7 +845,9 @@ TIME_STAMP; ROTOR-SPEED; GEARBOX_OIL_TEMP; SHAFT_VIBR; WIND_VELOCITY; ACTIVE_POW
               <h1 className="text-xl font-bold tracking-tight text-white font-sans flex items-center">
                 AEGIS <span className="text-emerald-500 ml-1.5 font-light">SCADA</span>
               </h1>
-              <span className="text-[10px] uppercase tracking-widest text-emerald-400 font-medium">Predictive Maintenance OS</span>
+              <span className="text-[10px] uppercase tracking-widest text-emerald-400 font-medium">
+                Autonomous Equipment Guard & Intelligent Scheduler | Sorigin AMS
+              </span>
             </div>
           </div>
           
@@ -902,8 +904,11 @@ TIME_STAMP; ROTOR-SPEED; GEARBOX_OIL_TEMP; SHAFT_VIBR; WIND_VELOCITY; ACTIVE_POW
               </div>
               
               <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight leading-tight">
-                Aegis Predictive Maintenance <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-400">SCADA OS</span>
+                AEGIS <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-400">SCADA OS</span>
               </h2>
+              <span className="text-xs font-semibold text-emerald-400 tracking-wider">
+                Autonomous Equipment Guard & Intelligent Scheduler | Core Predictive Module of Sorigin AMS
+              </span>
               
               <p className="text-sm text-slate-400 max-w-xl leading-relaxed">
                 An artificial-intelligence operating system that predicts equipment wear and prevents catastrophic turbine shutdowns entirely inside the browser.
